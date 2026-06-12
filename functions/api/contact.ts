@@ -1,14 +1,20 @@
-export const prerender = false;
-
-import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 
-export const POST: APIRoute = async ({ request }) => {
+interface Env {
+  RESEND_API_KEY: string;
+  CONTACT_TO_EMAIL: string;
+  CONTACT_FROM_EMAIL: string;
+}
+
+export const onRequestPost = async (context: {
+  request: Request;
+  env: Env;
+}): Promise<Response> => {
   const headers = { 'Content-Type': 'application/json' };
 
   let body: unknown;
   try {
-    body = await request.json();
+    body = await context.request.json();
   } catch {
     return new Response(
       JSON.stringify({ success: false, message: 'リクエストの形式が正しくありません' }),
@@ -46,11 +52,9 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  const apiKey = import.meta.env.RESEND_API_KEY;
-  const toEmail = import.meta.env.CONTACT_TO_EMAIL;
-  const fromEmail = import.meta.env.CONTACT_FROM_EMAIL;
+  const { RESEND_API_KEY, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL } = context.env;
 
-  if (!apiKey || !toEmail || !fromEmail) {
+  if (!RESEND_API_KEY || !CONTACT_TO_EMAIL || !CONTACT_FROM_EMAIL) {
     return new Response(
       JSON.stringify({ success: false, message: '送信設定が構成されていません' }),
       { status: 500, headers }
@@ -58,10 +62,10 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    const resend = new Resend(apiKey);
+    const resend = new Resend(RESEND_API_KEY);
     await resend.emails.send({
-      from: fromEmail,
-      to: toEmail,
+      from: CONTACT_FROM_EMAIL,
+      to: CONTACT_TO_EMAIL,
       subject: `【お問い合わせ】${name} 様より`,
       html: `
         <h2>お問い合わせが届きました</h2>
