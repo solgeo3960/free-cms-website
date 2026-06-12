@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: your-github-user/your-repository-name
+  repo: solgeo3960/free-cms-website
   branch: main
 
 media_folder: "public/images/uploads"
