@@ -1,0 +1,387 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="お問い合わせ | PROXIMA"
+  description="サービスに関するご相談・お見積もり・採用のお問い合わせはこちらから。"
+>
+  <Header slot="header" currentPath="/contact/" />
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <div class="hero-label">// CONTACT</div>
+      <h1 class="hero-title">お問い合わせ</h1>
+      <p class="hero-sub">サービスに関するご相談・お見積もり・採用のお問い合わせはこちらから。</p>
+    </div>
+  </section>
+
+  <!-- Form section -->
+  <section class="section-form">
+    <div class="form-grid">
+      <!-- Info -->
+      <div class="contact-info reveal">
+        <h3 class="info-heading">Contact Info</h3>
+        <div class="info-list">
+          <div class="info-item">
+            <div class="info-label">EMAIL</div>
+            <div class="info-value">contact@proxima.co.jp</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">TEL</div>
+            <div class="info-value">03-1234-5678（平日 10:00–18:00）</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">ADDRESS</div>
+            <div class="info-value">
+              〒150-0001<br />
+              東京都渋谷区神宮前0-0-0 PROXIMAタワー 18F
+            </div>
+          </div>
+        </div>
+        <div class="map-placeholder">
+          <div class="map-inner">
+            <div class="map-grid"></div>
+            <div class="map-glow"></div>
+            <div class="map-corner map-corner-tr"></div>
+            <div class="map-corner map-corner-bl"></div>
+            <div class="map-label">// map</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="form-wrap reveal" style="transition-delay:120ms">
+        <form id="contact-form" novalidate>
+          <div class="form-group">
+            <label for="name" class="form-label">お名前 <span class="required">*</span></label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-input"
+              placeholder="山田 太郎"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email" class="form-label">メールアドレス <span class="required">*</span></label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-input"
+              placeholder="taro@example.com"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="message" class="form-label">お問い合わせ内容 <span class="required">*</span></label>
+            <textarea
+              id="message"
+              name="message"
+              class="form-input form-textarea"
+              placeholder="ご相談内容をご記入ください。"
+              rows="6"
+              required
+            ></textarea>
+          </div>
+
+          <div id="form-status" class="form-status" aria-live="polite"></div>
+
+          <button type="submit" id="submit-btn" class="btn-submit">
+            <span id="btn-text">送信する →</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    background: #070d26;
+    color: #fff;
+    padding: 160px 0 80px;
+    overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute;
+    top: -120px;
+    right: -80px;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(47, 107, 255, 0.4), transparent 62%);
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .hero-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: #9fbeff;
+    animation: heroIn 0.7s both;
+  }
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(40px, 6vw, 78px);
+    line-height: 1.04;
+    margin-top: 20px;
+    animation: heroIn 0.85s 0.06s both;
+  }
+  .hero-sub {
+    max-width: 560px;
+    font-size: 18px;
+    line-height: 1.9;
+    color: rgba(220, 228, 245, 0.82);
+    margin-top: 22px;
+    animation: heroIn 1s 0.12s both;
+  }
+
+  .section-form {
+    background: #f7f9fc;
+    padding: 100px 0 130px;
+  }
+  .form-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 56px;
+  }
+
+  /* Info */
+  .info-heading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: #0a1430;
+  }
+  .info-list {
+    margin-top: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .info-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: #2f6bff;
+  }
+  .info-value {
+    font-size: 16px;
+    color: #0a1430;
+    margin-top: 6px;
+    line-height: 1.7;
+  }
+  .map-placeholder {
+    margin-top: 30px;
+    height: 200px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .map-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0c1838 0%, #10204a 55%, #16285f 100%);
+  }
+  .map-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(140, 175, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(140, 175, 255, 0.06) 1px, transparent 1px);
+    background-size: 38px 38px;
+  }
+  .map-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(130% 130% at 82% 8%, rgba(76, 141, 255, 0.38), transparent 56%);
+  }
+  .map-corner {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+  }
+  .map-corner-tr {
+    right: 16px;
+    top: 14px;
+    border-top: 1.5px solid rgba(150, 185, 255, 0.55);
+    border-right: 1.5px solid rgba(150, 185, 255, 0.55);
+  }
+  .map-corner-bl {
+    left: 16px;
+    bottom: 14px;
+    border-bottom: 1.5px solid rgba(150, 185, 255, 0.55);
+    border-left: 1.5px solid rgba(150, 185, 255, 0.55);
+  }
+  .map-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 18px;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: rgba(178, 203, 255, 0.82);
+  }
+
+  /* Form */
+  .form-wrap {
+    background: #fff;
+    border-radius: 20px;
+    padding: 44px 40px;
+    box-shadow: 0 4px 24px rgba(10, 20, 48, 0.06);
+  }
+  .form-group {
+    margin-bottom: 28px;
+  }
+  .form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0a1430;
+    margin-bottom: 8px;
+  }
+  .required {
+    color: #2f6bff;
+  }
+  .form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid #dce5f0;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+    color: #0a1430;
+    background: #fafbff;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    outline: none;
+  }
+  .form-input::placeholder { color: #aab4c8; }
+  .form-input:focus {
+    border-color: #2f6bff;
+    box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.12);
+    background: #fff;
+  }
+  .form-input.error {
+    border-color: #e24a4a;
+  }
+  .form-textarea {
+    resize: vertical;
+    min-height: 150px;
+  }
+  .form-status {
+    font-size: 14px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .form-status.success {
+    display: block;
+    background: #edfaf4;
+    border: 1px solid #a3e6c9;
+    color: #1a7a4a;
+  }
+  .form-status.error {
+    display: block;
+    background: #fdf2f2;
+    border: 1px solid #f5c2c2;
+    color: #b92424;
+  }
+  .btn-submit {
+    width: 100%;
+    padding: 16px;
+    background: #2f6bff;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.25s, box-shadow 0.25s, opacity 0.25s;
+    box-shadow: 0 8px 24px rgba(47, 107, 255, 0.35);
+  }
+  .btn-submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px rgba(47, 107, 255, 0.45);
+  }
+  .btn-submit:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 900px) {
+    .form-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .form-wrap { padding: 28px 20px; }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const statusEl = document.getElementById('form-status') as HTMLDivElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const btnText = document.getElementById('btn-text') as HTMLSpanElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusEl.className = 'form-status';
+    statusEl.textContent = '';
+
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value.trim();
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim();
+    const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value.trim();
+
+    if (!name || !email || !message) {
+      statusEl.className = 'form-status error';
+      statusEl.textContent = 'すべての必須項目を入力してください。';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    btnText.textContent = '送信中…';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+      const data = await res.json() as { success: boolean; message?: string };
+
+      if (data.success) {
+        statusEl.className = 'form-status success';
+        statusEl.textContent = 'お問い合わせを受け付けました。担当者よりご連絡いたします。';
+        form.reset();
+      } else {
+        throw new Error(data.message ?? '送信に失敗しました');
+      }
+    } catch (err) {
+      statusEl.className = 'form-status error';
+      statusEl.textContent = err instanceof Error ? err.message : '送信に失敗しました。しばらくしてから再度お試しください。';
+    } finally {
+      submitBtn.disabled = false;
+      btnText.textContent = '送信する →';
+    }
+  });
+</script>

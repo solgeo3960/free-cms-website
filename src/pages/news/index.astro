@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const allNews = await getCollection('news');
+const news = allNews.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.');
+}
+---
+
+<BaseLayout title="ニュース | PROXIMA" description="PRTOXIMAのプレスリリース・製品アップデート・イベント情報。">
+  <Header slot="header" currentPath="/news/" />
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <div class="hero-label">// NEWS &amp; RELEASE</div>
+      <h1 class="hero-title">ニュース</h1>
+      <p class="hero-sub">プレスリリース・製品アップデート・イベント情報。</p>
+    </div>
+  </section>
+
+  <!-- News list -->
+  <section class="section-list">
+    <div class="container">
+      {news.length === 0 ? (
+        <p class="empty">まだ記事がありません。</p>
+      ) : (
+        <div class="news-list">
+          {news.map((item) => (
+            <a href={`/news/${item.data.slug}/`} class="news-row reveal">
+              <div class="news-date">{formatDate(item.data.date)}</div>
+              <div class="news-title">{item.data.title}</div>
+              <div class="news-arrow">→</div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    background: #070d26;
+    color: #fff;
+    padding: 160px 0 80px;
+    overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute;
+    top: -120px;
+    left: -80px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(47, 107, 255, 0.38), transparent 62%);
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .hero-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: #9fbeff;
+    animation: heroIn 0.7s both;
+  }
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(40px, 6vw, 78px);
+    line-height: 1.04;
+    margin-top: 20px;
+    animation: heroIn 0.85s 0.06s both;
+  }
+  .hero-sub {
+    max-width: 560px;
+    font-size: 18px;
+    line-height: 1.9;
+    color: rgba(220, 228, 245, 0.82);
+    margin-top: 22px;
+    animation: heroIn 1s 0.12s both;
+  }
+
+  .section-list {
+    background: #fff;
+    padding: 80px 0 130px;
+  }
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .empty {
+    text-align: center;
+    color: #8a97b4;
+    padding: 60px 0;
+    font-size: 16px;
+  }
+  .news-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 150px 1fr 30px;
+    gap: 24px;
+    align-items: center;
+    padding: 26px 16px;
+    border-bottom: 1px solid #e6ebf3;
+    transition: background 0.25s, padding-left 0.25s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .news-row:first-child {
+    border-top: 1px solid #e6ebf3;
+  }
+  .news-row:hover {
+    background: #f2f7ff;
+    padding-left: 24px;
+  }
+  .news-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: #8a97b4;
+  }
+  .news-title {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: #0a1430;
+  }
+  .news-arrow {
+    color: #2f6bff;
+    font-size: 18px;
+    justify-self: end;
+  }
+
+  @media (max-width: 600px) {
+    .news-row { grid-template-columns: 1fr; gap: 8px; }
+    .news-arrow { display: none; }
+  }
+</style>

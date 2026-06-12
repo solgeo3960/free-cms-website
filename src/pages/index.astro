@@ -1,0 +1,572 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const allNews = await getCollection('news');
+const latestNews = allNews
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 5);
+
+const services = [
+  {
+    no: '01',
+    en: 'Cloud',
+    title: 'クラウド基盤',
+    desc: 'AWS・Azure・GCPを活用したスケーラブルなクラウドアーキテクチャを設計・構築します。',
+    icon: '☁️',
+  },
+  {
+    no: '02',
+    en: 'AI / ML',
+    title: 'AI・機械学習',
+    desc: '業務データを活用した予測モデルや生成AIの導入で、意思決定を自動化・高度化します。',
+    icon: '🤖',
+  },
+  {
+    no: '03',
+    en: 'IoT',
+    title: 'IoT・エッジ',
+    desc: 'センサー・デバイスとクラウドを連携し、現場データのリアルタイム活用を実現します。',
+    icon: '📡',
+  },
+  {
+    no: '04',
+    en: 'Security',
+    title: 'セキュリティ',
+    desc: 'ゼロトラストアーキテクチャとSIEMで、企業資産を脅威から継続的に守ります。',
+    icon: '🔒',
+  },
+];
+---
+
+<BaseLayout title="PROXIMA – Engineering what's next.">
+  <Header slot="header" currentPath="/" />
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-glow hero-glow-1"></div>
+      <div class="hero-glow hero-glow-2"></div>
+    </div>
+    <div class="hero-grid-overlay"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        TECHNOLOGY × DX SOLUTIONS
+      </div>
+      <h1 class="hero-title">
+        Engineering<br />
+        <span class="hero-title-gradient">what's next.</span>
+      </h1>
+      <p class="hero-sub">
+        テクノロジーで、次の当たり前をつくる。<br />
+        クラウド・AI・IoT を統合し、企業のDXを構想から運用まで伴走します。
+      </p>
+      <div class="hero-actions">
+        <a href="/contact/" class="btn-primary">お問い合わせ →</a>
+        <a href="/about/" class="btn-ghost">会社情報を見る</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">320<span>+</span></div>
+          <div class="stat-label">導入企業 / Clients</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-num">99.99<span>%</span></div>
+          <div class="stat-label">稼働率 / Uptime</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <div class="stat-num">480<span>+</span></div>
+          <div class="stat-label">メンバー / Members</div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      SCROLL<span class="scroll-line"></span>
+    </div>
+  </section>
+
+  <!-- About snippet -->
+  <section class="section-about">
+    <div class="container">
+      <div class="grid-2">
+        <div class="reveal">
+          <div class="label">// ABOUT US</div>
+          <h2 class="heading-dark">技術を、<br />事業の推進力に。</h2>
+        </div>
+        <div class="reveal" style="transition-delay:120ms">
+          <p class="body-text">
+            PROXIMA は、クラウド基盤・AI・IoT を統合的に提供するテクノロジーカンパニーです。「構想」で終わらせず、設計・開発・運用までを一気通貫で担い、企業のデジタル変革を確かな成果へとつなげます。
+          </p>
+          <p class="body-text" style="margin-top:20px">
+            スタートアップから大企業まで、320社を超える導入実績。現場に寄り添うエンジニアリングで、次の当たり前をともにつくります。
+          </p>
+          <a href="/about/" class="link-arrow">会社情報を見る <span>→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section-services">
+    <div class="container">
+      <div class="section-header reveal">
+        <div>
+          <div class="label">// WHAT WE DO</div>
+          <h2 class="heading-dark" style="margin-top:14px">事業領域</h2>
+        </div>
+        <p class="section-sub">4つの技術領域を掛け合わせ、課題に最適なソリューションを設計します。</p>
+      </div>
+      <div class="services-grid">
+        {services.map((s) => (
+          <div class="service-card reveal">
+            <div class="service-no">{s.no}</div>
+            <div class="service-icon">{s.icon}</div>
+            <h3 class="service-en">{s.en}</h3>
+            <div class="service-title">{s.title}</div>
+            <p class="service-desc">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- News -->
+  {latestNews.length > 0 && (
+    <section class="section-news">
+      <div class="container">
+        <div class="section-header reveal">
+          <div>
+            <div class="label">// NEWS & RELEASE</div>
+            <h2 class="heading-dark" style="margin-top:14px">ニュース</h2>
+          </div>
+          <a href="/news/" class="link-arrow">すべてのニュース <span>→</span></a>
+        </div>
+        <div class="news-list">
+          {latestNews.map((item) => (
+            <a href={`/news/${item.data.slug}/`} class="news-row reveal">
+              <div class="news-date">
+                {item.data.date.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.')}
+              </div>
+              <div class="news-title">{item.data.title}</div>
+              <div class="news-arrow">→</div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA -->
+  <section class="section-cta">
+    <div class="cta-glow"></div>
+    <div class="cta-inner reveal">
+      <div class="label" style="color:#9fbeff">// LET'S BUILD TOGETHER</div>
+      <h2 class="cta-heading">あなたのDX、<br />次の一歩を一緒に。</h2>
+      <p class="cta-sub">課題のご相談から技術選定まで。まずはお気軽にお問い合わせください。</p>
+      <a href="/contact/" class="btn-primary btn-primary-large">お問い合わせ →</a>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    background: #070d26;
+    color: #fff;
+    padding: 150px 0 110px;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.9;
+  }
+  .hero-glow {
+    position: absolute;
+    border-radius: 50%;
+  }
+  .hero-glow-1 {
+    top: -180px;
+    right: -120px;
+    width: 680px;
+    height: 680px;
+    background: radial-gradient(circle, rgba(47, 107, 255, 0.45), transparent 62%);
+  }
+  .hero-glow-2 {
+    bottom: -260px;
+    left: -160px;
+    width: 560px;
+    height: 560px;
+    background: radial-gradient(circle, rgba(127, 168, 255, 0.28), transparent 64%);
+  }
+  .hero-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(140, 175, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(140, 175, 255, 0.045) 1px, transparent 1px);
+    background-size: 54px 54px;
+    mask-image: radial-gradient(120% 90% at 50% 0%, #000, transparent 75%);
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+    animation: heroIn 0.9s both;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border: 1px solid rgba(127, 168, 255, 0.3);
+    border-radius: 100px;
+    background: rgba(47, 107, 255, 0.08);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: #9fbeff;
+  }
+  .badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4c8dff;
+    animation: pulseDot 1.8s infinite;
+    flex-shrink: 0;
+  }
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(48px, 8vw, 104px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    margin: 28px 0 0;
+  }
+  .hero-title-gradient {
+    background: linear-gradient(120deg, #4c8dff, #a9c4ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    max-width: 560px;
+    margin: 30px 0 0;
+    font-size: 19px;
+    line-height: 1.85;
+    color: rgba(220, 228, 245, 0.82);
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 40px;
+  }
+  .btn-primary {
+    padding: 16px 30px;
+    background: #2f6bff;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 14px 36px rgba(47, 107, 255, 0.4);
+    transition: transform 0.25s, box-shadow 0.25s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 46px rgba(47, 107, 255, 0.55);
+  }
+  .btn-ghost {
+    padding: 16px 30px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background 0.25s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.13);
+  }
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-top: 72px;
+  }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 42px;
+    font-weight: 600;
+  }
+  .stat-num span {
+    font-size: 28px;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: rgba(200, 212, 240, 0.6);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+  }
+  .stat-divider {
+    width: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    align-self: stretch;
+  }
+  .scroll-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(200, 212, 240, 0.5);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 34px;
+    background: linear-gradient(rgba(200, 212, 240, 0.5), transparent);
+  }
+
+  /* ── Shared ── */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: #2f6bff;
+  }
+  .heading-dark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(34px, 4vw, 52px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #0a1430;
+  }
+  .body-text {
+    font-size: 17px;
+    line-height: 2;
+    color: #3a4661;
+  }
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #2f6bff;
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 28px;
+    text-decoration: none;
+    transition: gap 0.25s;
+  }
+  .link-arrow:hover { gap: 14px; }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 54px;
+  }
+  .section-sub {
+    max-width: 340px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #5b6786;
+  }
+
+  /* ── About ── */
+  .section-about {
+    background: #f7f9fc;
+    padding: 130px 0;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  /* ── Services ── */
+  .section-services {
+    background: #fff;
+    padding: 130px 0;
+    border-top: 1px solid #eaeff6;
+    border-bottom: 1px solid #eaeff6;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .service-card {
+    position: relative;
+    padding: 34px 28px 30px;
+    border: 1px solid #e6ebf3;
+    border-radius: 18px;
+    background: #fff;
+    transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
+    overflow: hidden;
+  }
+  .service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 50px rgba(10, 20, 48, 0.1);
+    border-color: #c9d7f2;
+  }
+  .service-no {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: #9aa8c6;
+  }
+  .service-icon {
+    font-size: 28px;
+    margin: 18px 0 22px;
+  }
+  .service-en {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #0a1430;
+  }
+  .service-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2f6bff;
+    margin-top: 4px;
+  }
+  .service-desc {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #5b6786;
+    margin-top: 14px;
+  }
+
+  /* ── News ── */
+  .section-news {
+    background: #f7f9fc;
+    padding: 130px 0;
+  }
+  .news-list {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .news-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 150px 1fr 30px;
+    gap: 24px;
+    align-items: center;
+    padding: 26px 16px;
+    border-bottom: 1px solid #e6ebf3;
+    transition: background 0.25s, padding 0.25s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .news-row:hover {
+    background: #f2f7ff;
+    padding-left: 24px;
+  }
+  .news-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: #8a97b4;
+  }
+  .news-title {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: #0a1430;
+  }
+  .news-arrow {
+    color: #2f6bff;
+    font-size: 18px;
+    justify-self: end;
+  }
+
+  /* ── CTA ── */
+  .section-cta {
+    position: relative;
+    background: #070d26;
+    color: #fff;
+    padding: 130px 0;
+    overflow: hidden;
+    text-align: center;
+  }
+  .cta-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 760px;
+    height: 760px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(47, 107, 255, 0.28), transparent 60%);
+  }
+  .cta-inner {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .cta-heading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(36px, 5.5vw, 64px);
+    line-height: 1.08;
+    margin: 22px 0 0;
+  }
+  .cta-sub {
+    font-size: 18px;
+    line-height: 1.9;
+    color: rgba(220, 228, 245, 0.8);
+    margin: 26px auto 0;
+    max-width: 560px;
+  }
+  .btn-primary-large {
+    margin-top: 38px;
+    padding: 17px 38px;
+    font-size: 17px;
+    box-shadow: 0 16px 40px rgba(47, 107, 255, 0.45);
+  }
+  .btn-primary-large:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 52px rgba(47, 107, 255, 0.6);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .grid-2 { grid-template-columns: 1fr; gap: 40px; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .news-row { grid-template-columns: 120px 1fr 24px; }
+  }
+  @media (max-width: 600px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .news-row { grid-template-columns: 1fr; }
+    .news-date { font-size: 12px; }
+    .news-arrow { display: none; }
+  }
+</style>

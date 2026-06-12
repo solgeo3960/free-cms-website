@@ -1,0 +1,308 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const allNews = await getCollection('news');
+  return allNews.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+};
+
+const { entry } = Astro.props;
+if (!entry) return Astro.redirect('/404');
+
+const { Content } = await render(entry);
+
+const allNews = await getCollection('news');
+const sorted = allNews.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const idx = sorted.findIndex((n) => n.data.slug === entry.data.slug);
+const prev = sorted[idx + 1] ?? null;
+const next = sorted[idx - 1] ?? null;
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+---
+
+<BaseLayout
+  title={`${entry.data.title} | PROXIMA`}
+  description={entry.data.description}
+  ogImage={entry.data.thumbnail}
+>
+  <Header slot="header" currentPath="/news/" />
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <a href="/news/" class="back-link">← ニュース一覧へ</a>
+      <div class="news-meta">
+        <span class="news-date">{formatDate(entry.data.date)}</span>
+      </div>
+      <h1 class="hero-title">{entry.data.title}</h1>
+      {entry.data.description && <p class="hero-sub">{entry.data.description}</p>}
+    </div>
+  </section>
+
+  <!-- Article -->
+  <section class="section-article">
+    <div class="article-container">
+      {entry.data.thumbnail && (
+        <div class="thumbnail">
+          <img src={entry.data.thumbnail} alt={entry.data.title} />
+        </div>
+      )}
+      <div class="prose">
+        <Content />
+      </div>
+
+      <!-- Prev/Next nav -->
+      <div class="article-nav">
+        {prev ? (
+          <a href={`/news/${prev.data.slug}/`} class="nav-prev">
+            <span class="nav-direction">← 前の記事</span>
+            <span class="nav-title">{prev.data.title}</span>
+          </a>
+        ) : <div />}
+        {next ? (
+          <a href={`/news/${next.data.slug}/`} class="nav-next">
+            <span class="nav-direction">次の記事 →</span>
+            <span class="nav-title">{next.data.title}</span>
+          </a>
+        ) : <div />}
+      </div>
+
+      <div class="back-wrap">
+        <a href="/news/" class="btn-back">← ニュース一覧へ戻る</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    background: #070d26;
+    color: #fff;
+    padding: 160px 0 80px;
+    overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute;
+    top: -100px;
+    right: -80px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(47, 107, 255, 0.35), transparent 62%);
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .back-link {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: #9fbeff;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+    animation: heroIn 0.7s both;
+  }
+  .back-link:hover { color: #fff; }
+  .news-meta {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-top: 20px;
+    animation: heroIn 0.8s 0.04s both;
+  }
+  .news-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: rgba(200, 212, 240, 0.7);
+  }
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 52px);
+    line-height: 1.2;
+    margin-top: 16px;
+    animation: heroIn 0.9s 0.08s both;
+  }
+  .hero-sub {
+    max-width: 600px;
+    font-size: 17px;
+    line-height: 1.85;
+    color: rgba(220, 228, 245, 0.78);
+    margin-top: 20px;
+    animation: heroIn 1s 0.12s both;
+  }
+
+  .section-article {
+    background: #fff;
+    padding: 80px 0 120px;
+  }
+  .article-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .thumbnail {
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 56px;
+  }
+  .thumbnail img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+  }
+
+  /* Markdown styles */
+  .prose {
+    font-size: 17px;
+    line-height: 2;
+    color: #3a4661;
+  }
+  .prose :global(h1),
+  .prose :global(h2),
+  .prose :global(h3),
+  .prose :global(h4) {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: #0a1430;
+    margin: 2.4em 0 0.8em;
+    line-height: 1.3;
+  }
+  .prose :global(h2) { font-size: 1.6em; border-bottom: 2px solid #e6ebf3; padding-bottom: 0.4em; }
+  .prose :global(h3) { font-size: 1.3em; }
+  .prose :global(p) { margin: 0 0 1.4em; }
+  .prose :global(a) { color: #2f6bff; text-decoration: underline; }
+  .prose :global(strong) { color: #0a1430; font-weight: 700; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 1.6em; margin: 0 0 1.4em; }
+  .prose :global(li) { margin: 0.4em 0; }
+  .prose :global(blockquote) {
+    border-left: 4px solid #2f6bff;
+    padding: 16px 24px;
+    background: #f2f7ff;
+    border-radius: 0 8px 8px 0;
+    color: #5b6786;
+    margin: 1.6em 0;
+  }
+  .prose :global(code) {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.88em;
+    background: #f2f7ff;
+    border: 1px solid #d6e4ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #2f6bff;
+  }
+  .prose :global(pre) {
+    background: #0a1430;
+    border-radius: 12px;
+    padding: 24px;
+    overflow-x: auto;
+    margin: 1.6em 0;
+  }
+  .prose :global(pre code) {
+    background: none;
+    border: none;
+    color: #a9c4ff;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .prose :global(img) {
+    border-radius: 12px;
+    margin: 1.6em 0;
+  }
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid #e6ebf3;
+    margin: 2.4em 0;
+  }
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    margin: 1.6em 0;
+  }
+  .prose :global(th), .prose :global(td) {
+    border: 1px solid #e6ebf3;
+    padding: 10px 16px;
+    text-align: left;
+  }
+  .prose :global(th) {
+    background: #f7f9fc;
+    font-weight: 600;
+    color: #0a1430;
+  }
+
+  /* Nav */
+  .article-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 72px;
+    padding-top: 40px;
+    border-top: 1px solid #e6ebf3;
+  }
+  .nav-prev, .nav-next {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px;
+    border: 1px solid #e6ebf3;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: border-color 0.25s, background 0.25s;
+  }
+  .nav-prev:hover, .nav-next:hover {
+    border-color: #2f6bff;
+    background: #f2f7ff;
+  }
+  .nav-next { text-align: right; }
+  .nav-direction {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: #2f6bff;
+    letter-spacing: 0.06em;
+  }
+  .nav-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #0a1430;
+    line-height: 1.5;
+  }
+  .back-wrap {
+    text-align: center;
+    margin-top: 56px;
+  }
+  .btn-back {
+    display: inline-block;
+    padding: 14px 28px;
+    border: 1.5px solid #e6ebf3;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #3a4661;
+    text-decoration: none;
+    transition: border-color 0.25s, color 0.25s;
+  }
+  .btn-back:hover {
+    border-color: #2f6bff;
+    color: #2f6bff;
+  }
+</style>

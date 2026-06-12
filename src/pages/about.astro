@@ -1,0 +1,397 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const stats = [
+  { value: '2010', label: '設立年 / Founded' },
+  { value: '320+', label: '導入企業 / Clients' },
+  { value: '480+', label: 'メンバー / Members' },
+  { value: '99.99%', label: '稼働率 / Uptime' },
+];
+
+const history = [
+  { year: '2010', title: '会社設立', desc: '東京・渋谷にてクラウドインテグレーション専門会社として創業。' },
+  { year: '2014', title: 'AI事業開始', desc: '機械学習エンジン開発チームを発足。大手製造業向けに品質検査AIを提供開始。' },
+  { year: '2017', title: 'IoTプラットフォーム提供開始', desc: '独自IoTゲートウェイとクラウド基盤を統合したソリューションをリリース。' },
+  { year: '2021', title: 'Series B調達・海外展開', desc: 'シリーズBで50億円を調達。シンガポール・東南アジア拠点を設立。' },
+  { year: '2024', title: '生成AI統合ソリューション提供', desc: 'LLMを活用したエンタープライズ向け生成AI統合ソリューションの提供を開始。' },
+];
+---
+
+<BaseLayout
+  title="会社情報 | PROXIMA"
+  description="PRTOXIMAは「技術を、事業の推進力に」を掲げ、企業のデジタル変革に伴走するテクノロジーカンパニーです。"
+>
+  <Header slot="header" currentPath="/about/" />
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <div class="label">// ABOUT PROXIMA</div>
+      <h1 class="hero-title">We build the<br />future, today.</h1>
+      <p class="hero-sub">
+        私たちは「技術を、事業の推進力に」を掲げ、企業のデジタル変革に伴走するテクノロジーカンパニーです。
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="section-white">
+    <div class="container">
+      <div class="grid-2">
+        <div class="visual-block reveal">
+          <div class="visual-inner">
+            <div class="visual-grid"></div>
+            <div class="visual-glow"></div>
+            <div class="visual-corner visual-corner-tr"></div>
+            <div class="visual-corner visual-corner-bl"></div>
+            <div class="visual-label">// office photo</div>
+          </div>
+        </div>
+        <div class="reveal" style="transition-delay:120ms">
+          <div class="label">// OUR MISSION</div>
+          <h2 class="heading-dark" style="margin-top:16px">次の当たり前を、<br />つくる。</h2>
+          <p class="body-text" style="margin-top:22px">
+            テクノロジーは、誰かの「不便」を「当たり前」に変える力を持っています。私たちは、最先端の技術を実装可能な形に落とし込み、企業と社会の前進を支えます。
+          </p>
+          <p class="body-text" style="margin-top:18px">
+            構想から運用まで一気通貫。現場に深く入り込み、成果が出るまで伴走することが、私たちの流儀です。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section-stats">
+    <div class="container">
+      <div class="stats-grid">
+        {stats.map((s) => (
+          <div class="stat-item reveal">
+            <div class="stat-value">{s.value}</div>
+            <div class="stat-label">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- History -->
+  <section class="section-history">
+    <div class="container">
+      <div class="reveal" style="margin-bottom:60px">
+        <div class="label">// HISTORY</div>
+        <h2 class="heading-dark" style="margin-top:14px">沿革</h2>
+      </div>
+      <div class="timeline">
+        {history.map((h, i) => (
+          <div class="timeline-item reveal" style={`transition-delay:${i * 80}ms`}>
+            <div class="timeline-year">{h.year}</div>
+            <div class="timeline-line"></div>
+            <div class="timeline-content">
+              <div class="timeline-title">{h.title}</div>
+              <div class="timeline-desc">{h.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-cta">
+    <div class="cta-glow"></div>
+    <div class="cta-inner reveal">
+      <div class="label" style="color:#9fbeff">// JOIN US</div>
+      <h2 class="cta-heading">ともに、次をつくる。</h2>
+      <p class="cta-sub">ビジネスに関するご相談・採用のお問い合わせはこちらから。</p>
+      <a href="/contact/" class="btn-primary">お問い合わせ →</a>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    background: #070d26;
+    color: #fff;
+    padding: 160px 0 90px;
+    overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute;
+    top: -120px;
+    right: -100px;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(47, 107, 255, 0.4), transparent 62%);
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(40px, 6vw, 80px);
+    line-height: 1.02;
+    margin-top: 20px;
+    animation: heroIn 0.85s 0.06s both;
+  }
+  .hero-sub {
+    max-width: 560px;
+    font-size: 18px;
+    line-height: 1.9;
+    color: rgba(220, 228, 245, 0.82);
+    margin-top: 26px;
+    animation: heroIn 1s 0.12s both;
+  }
+  .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: #9fbeff;
+    animation: heroIn 0.7s both;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .label.dark {
+    color: #2f6bff;
+    animation: none;
+  }
+
+  .section-white {
+    background: #fff;
+    padding: 120px 0;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .visual-block {
+    height: 380px;
+    border-radius: 22px;
+    overflow: hidden;
+  }
+  .visual-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0c1838 0%, #10204a 55%, #16285f 100%);
+  }
+  .visual-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(140, 175, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(140, 175, 255, 0.06) 1px, transparent 1px);
+    background-size: 38px 38px;
+  }
+  .visual-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(130% 130% at 82% 8%, rgba(76, 141, 255, 0.38), transparent 56%);
+  }
+  .visual-corner {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+  }
+  .visual-corner-tr {
+    right: 16px;
+    top: 14px;
+    border-top: 1.5px solid rgba(150, 185, 255, 0.55);
+    border-right: 1.5px solid rgba(150, 185, 255, 0.55);
+  }
+  .visual-corner-bl {
+    left: 16px;
+    bottom: 14px;
+    border-bottom: 1.5px solid rgba(150, 185, 255, 0.55);
+    border-left: 1.5px solid rgba(150, 185, 255, 0.55);
+  }
+  .visual-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 18px;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: rgba(178, 203, 255, 0.82);
+  }
+  .label.on-section {
+    color: #2f6bff;
+    animation: none;
+  }
+  .heading-dark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(30px, 3.6vw, 46px);
+    line-height: 1.15;
+    color: #0a1430;
+  }
+  .body-text {
+    font-size: 17px;
+    line-height: 2;
+    color: #3a4661;
+  }
+
+  /* Stats */
+  .section-stats {
+    background: #f7f9fc;
+    padding: 80px 0;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .stat-item {
+    text-align: center;
+    padding: 40px 20px;
+    border: 1px solid #e6ebf3;
+    background: #fff;
+  }
+  .stat-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #0a1430;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: #8a97b4;
+    margin-top: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  /* History */
+  .section-history {
+    background: #fff;
+    padding: 130px 0;
+    border-top: 1px solid #eaeff6;
+  }
+  .timeline {
+    max-width: 720px;
+  }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 80px 40px 1fr;
+    gap: 0 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid #e6ebf3;
+    align-items: start;
+  }
+  .timeline-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: #2f6bff;
+    padding-top: 3px;
+  }
+  .timeline-line {
+    display: flex;
+    justify-content: center;
+    padding-top: 8px;
+  }
+  .timeline-line::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2f6bff;
+    display: block;
+  }
+  .timeline-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #0a1430;
+    margin-bottom: 8px;
+  }
+  .timeline-desc {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #5b6786;
+  }
+
+  /* CTA */
+  .section-cta {
+    position: relative;
+    background: #070d26;
+    color: #fff;
+    padding: 120px 0;
+    overflow: hidden;
+    text-align: center;
+  }
+  .cta-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(47, 107, 255, 0.28), transparent 60%);
+  }
+  .cta-inner {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .cta-heading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.1;
+    margin: 20px 0 0;
+  }
+  .cta-sub {
+    font-size: 17px;
+    line-height: 1.9;
+    color: rgba(220, 228, 245, 0.8);
+    margin: 22px auto 0;
+    max-width: 480px;
+  }
+  .btn-primary {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 16px 34px;
+    background: #2f6bff;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 14px 36px rgba(47, 107, 255, 0.4);
+    transition: transform 0.25s, box-shadow 0.25s;
+    text-decoration: none;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 46px rgba(47, 107, 255, 0.55);
+  }
+
+  @media (max-width: 900px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .timeline-item { grid-template-columns: 70px 32px 1fr; }
+  }
+  @media (max-width: 560px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>

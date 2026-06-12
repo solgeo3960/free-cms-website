@@ -1,0 +1,21 @@
+backend:
+  name: github
+  repo: your-github-user/your-repository-name
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "news"
+    label: "お知らせ"
+    folder: "src/content/news"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "タイトル", name: "title", widget: "string" }
+      - { label: "スラッグ", name: "slug", widget: "string" }
+      - { label: "公開日", name: "date", widget: "datetime" }
+      - { label: "サムネイル", name: "thumbnail", widget: "image", required: false }
+      - { label: "概要文", name: "description", widget: "text", required: false }
+      - { label: "本文", name: "body", widget: "markdown" }
